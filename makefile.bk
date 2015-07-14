@@ -1,0 +1,34 @@
+CPPSRCS		= test_hopd.cpp cpp_framework.cpp
+TARGET		= test_intel64
+
+ROOT 		= .
+LIBSSMEM = $(ROOT)/external
+
+CPP			= g++
+
+CPPFLAGS	= -O3 -m64 -DNDEBUG -DINTEL64 -D_REENTRANT -lrt -lpthread -I$(ROOT)/include -I$(LIBSSMEM)/include
+LDFLAGS		= -O3 -m64 -DNDEBUG -DINTEL64 -D_REENTRANT -lrt -lpthread -I$(ROOT)/include -L$(LIBSSMEM)/lib -lsspfd_x86_64 -lssmem_x86_64
+LDFLAGS+		=-L$(LIBSSMEM)/lib -lssmem_x86 -lsspfd_x86
+
+#CPPFLAGS	= -O3 -m64 -DNDEBUG -DINTEL64 -D_REENTRANT -lrt -pthread -I$(ROOT)/include -I$(LIBSSMEM)/include
+#LFLAGS		= -O3 -m64 -DNDEBUG -DINTEL64 -D_REENTRANT -lrt -pthread
+
+
+OBJS		= $(CPPSRCS:.cpp=.o)
+
+all: $(TARGET)
+
+test_hopd.o:
+	$(CPP) $(CPPFLAGS) -c ./test/test_hopd.cpp
+
+cpp_framework.o:
+	$(CPP) $(CPPFLAGS) -c ./framework/cpp_framework.cpp
+
+$(TARGET): $(OBJS)
+	$(CPP) $(LFLAGS) $(OBJS) -o $(TARGET)
+
+clean:
+	rm -f $(OBJS) $(TARGET)
+
+depend:
+	mkdep $(SRCS)
