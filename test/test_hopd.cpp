@@ -126,7 +126,7 @@ int _gTotalRandNum;
 
 void PrepareRandomNumbers() {
 //	BitmapHopscotchHashMap<int, int, HASH_INT, DummyLock, CMDR::Memory> num_map(_gTotalRandNum*2, 1);
-
+	cout<<_gTotalRandNum<<"^^"<<endl;
 	_gRandNumAry = new int[_gTotalRandNum];
 	int last_number = 1;
 	for (int iRandNum = 0; iRandNum < _gTotalRandNum; ++iRandNum) {
@@ -138,6 +138,7 @@ void PrepareRandomNumbers() {
 }
 
 void FillTable(int table_size) {
+	cout<<_gRandNumAry[9]<<"ghj"<<endl;
 	for (int iRandNum = 0; iRandNum < table_size; ++iRandNum) {
 		DS_ADD(mset, _gRandNumAry[iRandNum], _gRandNumAry[iRandNum]);
 //		_gTestDs->put(_gRandNumAry[iRandNum], _gRandNumAry[iRandNum]);
@@ -647,11 +648,12 @@ int main(int argc, char **argv) {
 
 	stop = 0;
 
-	maxhtlength = (unsigned int) initial / load_factor;
+	maxhtlength = (unsigned int) initial / 0.6;
 	cout<<"initial :="<<initial<<endl;
-	PrepareRandomNumbers();
 	_gTotalRandNum = 2 * maxhtlength;
-	FillTable(maxhtlength);
+	PrepareRandomNumbers();
+//	_gTotalRandNum = 2 * maxhtlength;
+	FillTable(initial);
 	/* Initializes the local data */
 	putting_succ = (ticks *) calloc(num_threads, sizeof(ticks));
 	putting_fail = (ticks *) calloc(num_threads, sizeof(ticks));
