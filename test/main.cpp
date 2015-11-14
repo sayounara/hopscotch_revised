@@ -572,6 +572,7 @@ void PrepareRandomNumbers() {
 		//last_number = _gRand.nextInt(256*1024*1024) + 1;
 		last_number+=1;
 		_gRandNumAry[iRandNum] = last_number;
+		//cout<<"_gRandNumAry[%d]"<<iRandNum<<" = "<<_gRandNumAry[iRandNum] << endl;
 	}
 }
 
@@ -672,6 +673,10 @@ unsigned int RunBenchmark() {
 		result += _gThreadResultAry[iThread];
 	}
 
+	//calculate total throughput
+	long long throughput = 0.0;
+	throughput = (result / (_gEndTime - _gStartTime)) / 1e3;
+	cout<<"\tThroughput : "<<throughput <<" (Mops/s)\n"<< endl;
 	//print benchmark results ..............................................
 	cerr << ("    " + string(_gTestDs->name()) + " Num elm: " + Integer::toString(_gTestDs->size()))<< endl;
 

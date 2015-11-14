@@ -41,6 +41,39 @@
 #include "../framework/cpp_framework.h"
 
 ////////////////////////////////////////////////////////////////////////////////
+//INNER CLASSES
+////////////////////////////////////////////////////////////////////////////////
+class HASH_INT {
+public:
+	//you must define the following fields and properties
+	static const unsigned int _EMPTY_HASH;
+	static const unsigned int _BUSY_HASH;
+	static const int _EMPTY_KEY;
+	static const int _EMPTY_DATA;
+
+	inline static unsigned int Calc(int key) {
+		key ^= (key << 15) ^ 0xcd7dcd7d;
+		key ^= (key >> 10);
+		key ^= (key <<  3);
+		key ^= (key >>  6);
+		key ^= (key <<  2) + (key << 14);
+		key ^= (key >> 16);
+		return key;
+	}
+
+	inline static bool IsEqual(int left_key, int right_key) {
+		return left_key == right_key;
+	}
+
+	inline static void relocate_key_reference(int volatile& left, const int volatile& right) {
+		left = right;
+	}
+
+	inline static void relocate_data_reference(int volatile& left, const int volatile& right) {
+		left = right;
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
 // CLASS: ConcurrentHopscotchHashMap
 ////////////////////////////////////////////////////////////////////////////////
 template <typename	_tKey,

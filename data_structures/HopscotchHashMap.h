@@ -1,6 +1,5 @@
 #ifndef __HOPSCOTCH_HASHMAP__
 #define __HOPSCOTCH_HASHMAP__
-
 ////////////////////////////////////////////////////////////////////////////////
 // ConcurrentHopscotchHashMap Class
 //
@@ -38,7 +37,8 @@
 #include <limits.h>
 #include "math.h"
 #include "memory.h"
-
+#include<iostream>
+using namespace std;
 ////////////////////////////////////////////////////////////////////////////////
 // CLASS: ConcurrentHopscotchHashMap
 ////////////////////////////////////////////////////////////////////////////////
@@ -251,7 +251,7 @@ private:
 
 public:// Ctors ................................................................
 	HopscotchHashMap(
-				_u32 inCapacity				= 32*1024,	//init capacity
+				_u32 inCapacity				= 32*1024*1024,	//init capacity
 				_u32 concurrencyLevel	   = 16,			//num of updating threads
 				_u32 cache_line_size       = 64,			//Cache-line size of machine
 				bool is_optimize_cacheline = true)		
@@ -381,7 +381,7 @@ public:// Ctors ................................................................
 			}
 			--free_min_bucket;
 		}
-
+//		cout<<"putifabsent"<<endl;
 		//NEED TO RESIZE ..........................
 		fprintf(stderr, "ERROR - RESIZE is not implemented - size %u\n", size());
 		exit(1);
@@ -399,6 +399,7 @@ public:// Ctors ................................................................
 		Bucket* last_bucket( NULL );
 		Bucket* curr_bucket( start_bucket );
 		short	  next_delta (curr_bucket->_first_delta);
+//		cout<<"removeStart"<<endl;
 		do {
 			if(_NULL_DELTA == next_delta) {
 				segment._lock.unlock();
@@ -417,6 +418,8 @@ public:// Ctors ................................................................
 			last_bucket = curr_bucket;
 			next_delta = curr_bucket->_next_delta;
 		} while(true);
+//		cout<<"remove return value "<<_tHash::_EMPTY_DATA<<endl;
+
 		return _tHash::_EMPTY_DATA;
 	}
 

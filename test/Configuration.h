@@ -28,14 +28,14 @@
 
 class Configuration {
 public:
-	char*	algName;
-	int   test_no;
-	int   no_of_threads;
+	//char*	algName;
+	//int   test_no;
+	int   num_threads;
 
 	int   update_ops;
 	float	load_factor;
 
-	int   initial_count;
+	int   initial;
 	int   throughputTime;
 	int   is_print_result;
 
@@ -43,8 +43,8 @@ public:
 		try {
 			//read configuration from input stream
 			int i_load_factor=0;
-			int num_read = fscanf(stdin, "%s %d %d %d %d %d %d %d", algName, &test_no, &no_of_threads, &update_ops, &i_load_factor, &initial_count, &throughputTime, &is_print_result);
-			initial_count = CMDR::Integer::nearestPowerOfTwo(initial_count);
+			int num_read = fscanf(stdin, "%d %d %d %d %d %d", &num_threads, &update_ops, &i_load_factor, &initial, &throughputTime, &is_print_result);
+			initial = CMDR::Integer::nearestPowerOfTwo(initial);
 			load_factor = i_load_factor/100.0f;
 			return (14 == num_read);
 		} catch (...) {
@@ -58,12 +58,12 @@ public:
 			int i_load_factor=0;
 
 			int curr_arg=1;
-			algName = argv[curr_arg++];
-			test_no				= CMDR::Integer::parseInt(argv[curr_arg++]);
-			no_of_threads		= CMDR::Integer::parseInt(argv[curr_arg++]);
+			//algName = argv[curr_arg++];
+			//test_no				= CMDR::Integer::parseInt(argv[curr_arg++]);
+			num_threads		= CMDR::Integer::parseInt(argv[curr_arg++]);
 			update_ops			= CMDR::Integer::parseInt(argv[curr_arg++]);
 			i_load_factor		= CMDR::Integer::parseInt(argv[curr_arg++]);
-			initial_count		= CMDR::Integer::nearestPowerOfTwo((unsigned int)(CMDR::Integer::parseInt(argv[curr_arg++])));
+			initial		= CMDR::Integer::nearestPowerOfTwo((unsigned int)(CMDR::Integer::parseInt(argv[curr_arg++])));
 			throughputTime		= CMDR::Integer::parseInt(argv[curr_arg++]);
 			is_print_result	= CMDR::Integer::parseInt(argv[curr_arg++]);
 			load_factor = i_load_factor/100.0f;
@@ -73,7 +73,7 @@ public:
 		}
 	}
 
-	std::string GetAlgName() {return std::string(algName);}
+	//std::string GetAlgName() {return std::string(algName);}
 };
 
 #endif
