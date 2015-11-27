@@ -308,7 +308,7 @@ public:// Ctors ................................................................
 				if(hash == curr_bucket->_hash && _tHash::IsEqual(key, curr_bucket->_key))
 					return true;
 				next_delta = curr_bucket->_next_delta;
-			}//如果进行了第一遍while循环（此处用 do...while循环的好处就在这），没有找到这个key。恰在这时，一个concurrent insert（但是好像insert操作的过程中，segment._timestamp不会发生变化，这也符合常理，毕竟这个插入，已经是在执行了查询操作之后发生的（里面的while循环算作查询主体部分））操作插入了寻找的这个key，segment._timestamp就会变化，从而判断不相等，进行下一次遍历寻找。
+			}//如果进行了第一遍while循环（此处用 do...while循环的好处就在这），没有找到这个key。恰在这时，一个concurrent insert（但是好像insert操作的过程中，segment._timestamp不会发生变化，这也符合常理，毕竟这个插入，已经是在执行了查询操作之后发生的（里面的while循环算作查询主体部分））操作插入了寻找的这个key，segment._timestamp不会变化（insert方法没有对segment._timestamp修改），如果变化的话，从而判断不相等，进行下一次遍历寻找，而找到了。这会造成典型的ABA问题（有一个时间先后顺序来确定），所以在insert方法没有对segment._timestamp修改。
 		} while(start_timestamp != segment._timestamp);//如果两个start_timestamp == segment._timestamp表示在这个过程中没有发生一个concurrent insert插入了要寻找的这个key值，从而完全可以判定这次查找失败，即hashtable中不存在这个key值
 
 		return false;
