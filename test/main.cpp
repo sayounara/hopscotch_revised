@@ -542,7 +542,7 @@ int main(int argc, char **argv) {
 	//initialize global variables
 	_gNumProcessors     = 1;//Runtime.getRuntime().availableProcessors();
 	_gNumThreads        = _gConfiguration.no_of_threads;
-	_gTotalRandNum      = 2*(_gConfiguration.initial_count);
+	_gTotalRandNum      = 2*(_gConfiguration.initial);
 	_gThroughputTime    = _gConfiguration.throughputTime;
 
 	//mainInstance.ThrSetConcurrency(_gConfiguration.no_of_threads+3);

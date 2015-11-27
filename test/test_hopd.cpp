@@ -48,12 +48,12 @@ using namespace std;
 
 //! A concurrent hash table that maps ints to ints
 typedef HopscotchHashMap<int, int, HASH_INT, TTASLock, CMDR::Memory> IntTable;
-IntTable mset;
+IntTable *mset;
 
-#define DS_CONTAINS(s,k)    s.containsKey(k);
-#define DS_ADD(s,a,k)       s.putIfAbsent(a, k)
-#define DS_REMOVE(s,k)      s.remove(k)
-#define DS_SIZE(s)          s.size()
+#define DS_CONTAINS(s,k)    s->containsKey(k);
+#define DS_ADD(s,a,k)       s->putIfAbsent(a, k)
+#define DS_REMOVE(s,k)      s->remove(k)
+#define DS_SIZE(s)          s->size()
 //#define DS_NEW()            ;
 
 
@@ -398,7 +398,7 @@ main(int argc, char **argv)
 	  duration = atoi(optarg);
 	  break;
 	case 'i':
-	  initial = atoi(optarg);
+	  initial = CMDR::Integer::nearestPowerOfTwo((unsigned int)atoi(optarg));
 	  break;
 	case 'n':
 	  num_threads = atoi(optarg);
@@ -432,13 +432,15 @@ main(int argc, char **argv)
 	}
     }
 
+  mset=new IntTable(32*1024*1024, num_threads, 64, true );
+//  mset=new IntTable();
 
-  if (!is_power_of_two(initial))
-    {
-      size_t initial_pow2 = pow2roundup(initial);
-      printf("** rounding up initial (to make it power of 2): old: %zu / new: %zu\n", initial, initial_pow2);
-      initial = initial_pow2;
-    }
+//  if (!is_power_of_two(initial))
+//    {
+//      size_t initial_pow2 = pow2roundup(initial);
+//      printf("** rounding up initial (to make it power of 2): old: %zu / new: %zu\n", initial, initial_pow2);
+//      initial = initial_pow2;
+//    }
 
   if (range < initial)
     {

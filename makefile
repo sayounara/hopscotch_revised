@@ -8,9 +8,10 @@ ifeq ($(VERSION),MIC)
 VER_FLAGS +=-DMIC
 #VER_FLAGS +=-std=c++0x#-std=c++11,g++_mic不能识别
 CPP = g++_mic
-else
+endif
+ifeq ($(VERSION),XEON) 
 UNAME := $(shell uname -n)
-UNAME = chan-Z9NA-D6C
+UNAME = localhost.localdomain
 VER_FLAGS += -DXEON
 CPP = g++
 PLATFORM_NUMA = 1
@@ -20,6 +21,10 @@ endif
 ifeq ($(UNAME), localhost.localdomain)
 VER_FLAGS += -DR730
 endif
+endif
+
+ifeq ($(VERSION),AMD) 
+VER_FLAGS += -DAMD
 endif
 #CPP			= g++
 
